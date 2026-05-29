@@ -170,7 +170,8 @@ POST /api/predict
 
 ## 📸 Screenshots
 
-> *(Add screenshots of Dashboard, Predict, Compare, and Analytics tabs here after running the app)*
+<img width="1188" height="880" alt="Screenshot 2026-05-29 101145" src="https://github.com/user-attachments/assets/50b1c3a5-37b4-4d71-a780-352a2b91441d" />
+
 
 ---
 
