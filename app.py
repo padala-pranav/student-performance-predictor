@@ -3,6 +3,9 @@ app.py — Student Performance Predictor
 Flask backend serving the dashboard, prediction API, and analytics.
 """
 import os, json
+import threading
+import time
+import webbrowser
 import numpy as np
 import pandas as pd
 import joblib
@@ -158,5 +161,39 @@ def compare():
     return jsonify(out)
 
 
+def open_browser(url="http://127.0.0.1:5000"):
+    print(f"Attempting to open browser at {url}...")
+    try:
+        if os.name == "nt":
+            os.startfile(url)
+            return True
+    except Exception as exc:
+        print(f"Windows os.startfile() failed: {exc}")
+    try:
+        if webbrowser.open_new_tab(url):
+            return True
+        if webbrowser.open(url):
+            return True
+    except Exception as exc:
+        print(f"Could not open browser automatically. Visit {url} manually. Error: {exc}")
+    print(f"Browser auto-open failed; open {url} manually.")
+    return False
+
+
+def launch_browser(delay: float = 2.0):
+    def _open():
+        time.sleep(delay)
+        open_browser()
+    timer = threading.Timer(delay, _open)
+    timer.daemon = True
+    timer.start()
+
+
+if os.environ.get("FLASK_RUN_FROM_CLI") and os.environ.get("WERKZEUG_RUN_MAIN") != "true":
+    launch_browser()
+
+
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    print("Starting Student Performance Predictor on http://127.0.0.1:5000")
+    launch_browser()
+    app.run(debug=True, port=5000, use_reloader=False)
